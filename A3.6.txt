@@ -1,0 +1,51 @@
+1.If 7TB is the available disk space per node (9 disks with 1 TB, 2 disk for operating system etc.
+were excluded.). Assuming initial data size is 600 TB. How will you estimate the number of data
+nodes (n)?
+
+
+
+The formula for calculating  the number of data nodes:
+ 
+n= H/d = c*r*S/(1-i)*d 
+
+H=c*r*s   and d=(1-i)*d
+
+where
+
+-H=Hadoop storage 
+
+-c = average compression ratio
+   Compression ratio refers which compression type is used.Otherwise assign c as c=1;
+
+-r=Replication factor
+     The default value of Replication factor is 3 in production cluster.
+
+-s=size of the data which is to be moved to hadoop
+         It combines historical data and incremental data
+
+-i=Intermediate factor
+     By defaultly Intermediate factor is 1/3 or 1/4
+
+-d= disk space available for each node
+
+
+Solution :
+  H=600TB   d=7TB
+
+n=H/d
+  =600/7
+  =85.7
+ 
+ - 86 data nodes are needed.
+
+2.Imagine that you are uploading a file of 500MB into HDFS.100MB of data is successfully uploaded into HDFS and another client wants to read the uploaded data while the upload is still in 
+  progress. What will happen in such a scenario, will the 100 MB of data that is uploaded will it be displayed?
+
+ - Default block size of Hadoop 1x is 64 MB and Hadoop 2.x is 128MB . Let us assume the block size here as 100 MB . Then we will have to replicate 5 blocks  three times. 
+
+ - There are 5 blocks for a file , client , name node and data node . First the client consider the first block and will approach name node for data node location to store this block . 
+
+ - When the client is aware of datanode information it will reach out to data node and start copying the first block . 
+   Now , the client will get confirmation on first block and it will initiate the same process for the second block . 
+
+ - Thus, The reader can read the 100 MB uploaded data while the remaining upload is still in progress .  
